@@ -735,4 +735,30 @@
     if (MouseEvent !== o_O) MouseEvent = o_O;
   }
 
+  // window.FocusEvent as constructor
+  try { new FocusEvent('_', {}); } catch (o_O) {
+    /* jshint -W022 */
+    o_O = (function ($FocusEvent) {
+      function FocusEvent(type, init) {
+        enoughArguments(arguments.length, 'FocusEvent');
+        var out = document.createEvent('FocusEvent');
+        if (!init) init = {};
+        out.initFocusEvent(
+          type,
+          !!init.bubbles,
+          !!init.cancelable,
+          init.view || window,
+          init.detail || 1,
+          init.relatedTarget || null
+        );
+        return out;
+      }
+      FocusEvent.prototype = $FocusEvent.prototype;
+      return FocusEvent;
+    }(window.FocusEvent || function FocusEvent() {}));
+    defineProperty(window, 'FocusEvent', {value: o_O});
+    // Android 4 gotcha
+    if (FocusEvent !== o_O) FocusEvent = o_O;
+  }
+
 }(window));

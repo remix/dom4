@@ -589,6 +589,16 @@ wru.test([
       }));
       setTimeout(function () { div.dispatchEvent(ke); }, 100);
     }
+  }, {
+    name: 'FocusEvent',
+    test: function () {
+      var ke = new FocusEvent('blur', {detail: 2});
+      var input = document.createElement('input');
+      input.addEventListener('blur', wru.async(function (e) {
+        wru.assert('info passed through', e.detail === 2);
+      }));
+      setTimeout(function () { input.dispatchEvent(ke); }, 100);
+    }
   }
 ].concat(
   typeof ShadowRoot === 'function' ?
